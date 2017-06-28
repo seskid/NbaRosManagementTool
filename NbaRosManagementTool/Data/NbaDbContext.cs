@@ -8,9 +8,14 @@ using NbaRosManagementTool.Models;
 
 namespace NbaRosManagementTool.Data
 {
-    public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
+    public class NbaDbContext : IdentityDbContext<ApplicationUser>
     {
-        public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
+
+        public DbSet<Player> Players { get; set; }
+
+        public DbSet<Team> Teams { get; set; }
+
+        public NbaDbContext(DbContextOptions<NbaDbContext> options)
             : base(options)
         {
         }

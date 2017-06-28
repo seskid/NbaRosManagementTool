@@ -8,9 +8,10 @@ using NbaRosManagementTool.Data;
 namespace NbaRosManagementTool.Data.Migrations
 {
     [DbContext(typeof(NbaDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20170628030002_InitMigration")]
+    partial class InitMigration
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
             modelBuilder
                 .HasAnnotation("ProductVersion", "1.1.2")
@@ -173,50 +174,6 @@ namespace NbaRosManagementTool.Data.Migrations
                     b.ToTable("AspNetUsers");
                 });
 
-            modelBuilder.Entity("NbaRosManagementTool.Models.Player", b =>
-                {
-                    b.Property<int>("ID")
-                        .ValueGeneratedOnAdd();
-
-                    b.Property<decimal>("CapHold");
-
-                    b.Property<string>("FirstName");
-
-                    b.Property<string>("LastName");
-
-                    b.Property<double>("PPG");
-
-                    b.Property<bool>("Restricted");
-
-                    b.Property<decimal>("Salary");
-
-                    b.Property<int>("TeamID");
-
-                    b.HasKey("ID");
-
-                    b.HasIndex("TeamID");
-
-                    b.ToTable("Players");
-                });
-
-            modelBuilder.Entity("NbaRosManagementTool.Models.Team", b =>
-                {
-                    b.Property<int>("ID")
-                        .ValueGeneratedOnAdd();
-
-                    b.Property<decimal>("CapSpace");
-
-                    b.Property<string>("CityName");
-
-                    b.Property<string>("TeamName");
-
-                    b.Property<decimal>("TeamPayroll");
-
-                    b.HasKey("ID");
-
-                    b.ToTable("Teams");
-                });
-
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.EntityFrameworkCore.IdentityRoleClaim<string>", b =>
                 {
                     b.HasOne("Microsoft.AspNetCore.Identity.EntityFrameworkCore.IdentityRole")
@@ -251,14 +208,6 @@ namespace NbaRosManagementTool.Data.Migrations
                     b.HasOne("NbaRosManagementTool.Models.ApplicationUser")
                         .WithMany("Roles")
                         .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade);
-                });
-
-            modelBuilder.Entity("NbaRosManagementTool.Models.Player", b =>
-                {
-                    b.HasOne("NbaRosManagementTool.Models.Team")
-                        .WithMany("Roster")
-                        .HasForeignKey("TeamID")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
         }
