@@ -5,6 +5,8 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using NbaRosManagementTool.Models;
+using System.Reflection.Emit;
+using static NbaRosManagementTool.Models.ApplicationUser;
 
 namespace NbaRosManagementTool.Data
 {
@@ -14,6 +16,10 @@ namespace NbaRosManagementTool.Data
         public DbSet<Player> Players { get; set; }
 
         public DbSet<Team> Teams { get; set; }
+
+        public DbSet<UserTeams> UserTeams { get; set; }
+
+       
 
         public NbaDbContext(DbContextOptions<NbaDbContext> options)
             : base(options)
@@ -26,6 +32,10 @@ namespace NbaRosManagementTool.Data
             // Customize the ASP.NET Identity model and override the defaults if needed.
             // For example, you can rename the ASP.NET Identity table names and more.
             // Add your customizations after calling base.OnModelCreating(builder);
+
+          
+
+
         }
     }
 }

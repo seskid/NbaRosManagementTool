@@ -16,8 +16,8 @@ namespace NbaRosManagementTool.Data.Migrations
                     ID = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
                     CapSpace = table.Column<decimal>(nullable: false),
-                    CityName = table.Column<string>(nullable: true),
-                    TeamName = table.Column<string>(nullable: true),
+                    CityName = table.Column<string>(nullable: false),
+                    TeamName = table.Column<string>(nullable: false),
                     TeamPayroll = table.Column<decimal>(nullable: false)
                 },
                 constraints: table =>
@@ -31,11 +31,11 @@ namespace NbaRosManagementTool.Data.Migrations
                 {
                     ID = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
-                    CapHold = table.Column<decimal>(nullable: false),
-                    FirstName = table.Column<string>(nullable: true),
-                    LastName = table.Column<string>(nullable: true),
+                    CapHold = table.Column<decimal>(nullable: true),
+                    FirstName = table.Column<string>(nullable: false),
+                    LastName = table.Column<string>(nullable: false),
                     PPG = table.Column<double>(nullable: false),
-                    Restricted = table.Column<bool>(nullable: false),
+                    Restricted = table.Column<bool>(nullable: true),
                     Salary = table.Column<decimal>(nullable: false),
                     TeamID = table.Column<int>(nullable: false)
                 },

@@ -8,9 +8,10 @@ using NbaRosManagementTool.Data;
 namespace NbaRosManagementTool.Data.Migrations
 {
     [DbContext(typeof(NbaDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20170702204856_newup2")]
+    partial class newup2
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
             modelBuilder
                 .HasAnnotation("ProductVersion", "1.1.2")

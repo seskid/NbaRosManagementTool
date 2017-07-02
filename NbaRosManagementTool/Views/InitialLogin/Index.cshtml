@@ -1,0 +1,22 @@
+﻿@model NbaRosManagementTool.ViewModels.InitialLoginViewModel
+@using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+
+@{
+    ViewData["Title"] = "Pick your team";
+}
+
+<h1>Pick your favorite team.</h1>
+
+
+<form asp-controller="InitialLogin" asp-action="AddAsync" method="post">
+
+    <div class="form-group">
+        <label asp-for="TeamID"></label>
+        <select asp-for="TeamID" asp-items="Model.TeamList"></select>
+        <span asp-validation-for="TeamID"></span>
+   </div>
+
+    <input type="submit" value="Submit" />
+
+</form>
+
