@@ -12,6 +12,8 @@ using Microsoft.Extensions.Options;
 using NbaRosManagementTool.Models;
 using NbaRosManagementTool.Models.AccountViewModels;
 using NbaRosManagementTool.Services;
+using NbaRosManagementTool.Data;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 
 namespace NbaRosManagementTool.Controllers
 {
@@ -23,23 +25,30 @@ namespace NbaRosManagementTool.Controllers
         private readonly IEmailSender _emailSender;
         private readonly ISmsSender _smsSender;
         private readonly ILogger _logger;
+        private readonly NbaDbContext context;
         private readonly string _externalCookieScheme;
+       
 
         public AccountController(
             UserManager<ApplicationUser> userManager,
             SignInManager<ApplicationUser> signInManager,
             IOptions<IdentityCookieOptions> identityCookieOptions,
             IEmailSender emailSender,
+            NbaDbContext dbContext,
             ISmsSender smsSender,
             ILoggerFactory loggerFactory)
+
         {
             _userManager = userManager;
+             context = dbContext; 
             _signInManager = signInManager;
             _externalCookieScheme = identityCookieOptions.Value.ExternalCookieAuthenticationScheme;
             _emailSender = emailSender;
             _smsSender = smsSender;
             _logger = loggerFactory.CreateLogger<AccountController>();
         }
+
+        
 
         //
         // GET: /Account/Login
@@ -64,13 +73,17 @@ namespace NbaRosManagementTool.Controllers
             ViewData["ReturnUrl"] = returnUrl;
             if (ModelState.IsValid)
             {
+           
                 // This doesn't count login failures towards account lockout
                 // To enable password failures to trigger account lockout, set lockoutOnFailure: true
                 var result = await _signInManager.PasswordSignInAsync(model.Email, model.Password, model.RememberMe, lockoutOnFailure: false);
+              
+                
+               
                 if (result.Succeeded)
                 {
-                    _logger.LogInformation(1, "User logged in.");
-                    return Redirect("/InitialLogin");
+                     _logger.LogInformation(1, "User logged in.");
+                     return Redirect("/InitialLogin");
                 }
                 if (result.RequiresTwoFactor)
                 {
@@ -114,6 +127,7 @@ namespace NbaRosManagementTool.Controllers
             {
                 var user = new ApplicationUser { UserName = model.Email, Email = model.Email };
                 var result = await _userManager.CreateAsync(user, model.Password);
+
                 if (result.Succeeded)
                 {
                     // For more information on how to enable account confirmation and password reset please visit https://go.microsoft.com/fwlink/?LinkID=532713

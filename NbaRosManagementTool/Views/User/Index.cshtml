@@ -1,6 +1,33 @@
-﻿
+﻿@using NbaRosManagementTool.Models;
+@model NbaRosManagementTool.ViewModels.UserViewModel
 @{
     ViewData["Title"] = "My team";
 }
 
 <h1>Current Squad</h1>
+
+<p>@Model.userTeam.CityName   @Model.userTeam.TeamName</p>
+
+@if (Model.userTeam.theRoster == null)
+{
+    <p>Roster is empty.</p>
+
+}
+else
+{
+ 
+   foreach(Player p in Model.thePlayers)
+    {
+   
+        <label for="@p.ID">@p.FirstName@p.LastName  @p.Salary  </label>
+        <input type="checkbox" name="playerIds" id="@p.ID" value="@p.ID" />
+       
+        <br />
+    }
+
+    <button type="button">Trade Player(s)</button>    <button type="button">Sign a free agrent</button>    <button type="button">Release a player</button>
+
+}
+
+
+

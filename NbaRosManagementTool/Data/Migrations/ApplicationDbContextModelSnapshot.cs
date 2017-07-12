@@ -192,13 +192,9 @@ namespace NbaRosManagementTool.Data.Migrations
 
                     b.Property<int>("TeamID");
 
-                    b.Property<int?>("UserTeamsID");
-
                     b.HasKey("ID");
 
                     b.HasIndex("TeamID");
-
-                    b.HasIndex("UserTeamsID");
 
                     b.ToTable("Players");
                 });
@@ -219,6 +215,19 @@ namespace NbaRosManagementTool.Data.Migrations
                     b.HasKey("ID");
 
                     b.ToTable("Teams");
+                });
+
+            modelBuilder.Entity("NbaRosManagementTool.Models.UserPlayers", b =>
+                {
+                    b.Property<int>("PlayerID");
+
+                    b.Property<int>("UserTeamsID");
+
+                    b.HasKey("PlayerID", "UserTeamsID");
+
+                    b.HasIndex("UserTeamsID");
+
+                    b.ToTable("UserPlayers");
                 });
 
             modelBuilder.Entity("NbaRosManagementTool.Models.UserTeams", b =>
@@ -286,10 +295,19 @@ namespace NbaRosManagementTool.Data.Migrations
                         .WithMany("Roster")
                         .HasForeignKey("TeamID")
                         .OnDelete(DeleteBehavior.Cascade);
+                });
 
-                    b.HasOne("NbaRosManagementTool.Models.UserTeams")
-                        .WithMany("Roster")
-                        .HasForeignKey("UserTeamsID");
+            modelBuilder.Entity("NbaRosManagementTool.Models.UserPlayers", b =>
+                {
+                    b.HasOne("NbaRosManagementTool.Models.Player", "Player")
+                        .WithMany()
+                        .HasForeignKey("PlayerID")
+                        .OnDelete(DeleteBehavior.Cascade);
+
+                    b.HasOne("NbaRosManagementTool.Models.UserTeams", "UserTeam")
+                        .WithMany("theRoster")
+                        .HasForeignKey("UserTeamsID")
+                        .OnDelete(DeleteBehavior.Cascade);
                 });
 
             modelBuilder.Entity("NbaRosManagementTool.Models.UserTeams", b =>

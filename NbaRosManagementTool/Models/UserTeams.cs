@@ -17,7 +17,7 @@ namespace NbaRosManagementTool.Models
 
         public decimal CapSpace { get; set; }
 
-        public List<Player> Roster { get; set; }
+        public List<UserPlayers> theRoster { get; set; } = new List<UserPlayers>();
 
         public virtual ApplicationUser User { get; set; }
         

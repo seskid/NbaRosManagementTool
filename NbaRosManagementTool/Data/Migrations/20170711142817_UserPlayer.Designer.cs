@@ -8,8 +8,8 @@ using NbaRosManagementTool.Data;
 namespace NbaRosManagementTool.Data.Migrations
 {
     [DbContext(typeof(NbaDbContext))]
-    [Migration("20170702204856_newup2")]
-    partial class newup2
+    [Migration("20170711142817_UserPlayer")]
+    partial class UserPlayer
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -193,13 +193,9 @@ namespace NbaRosManagementTool.Data.Migrations
 
                     b.Property<int>("TeamID");
 
-                    b.Property<int?>("UserTeamsID");
-
                     b.HasKey("ID");
 
                     b.HasIndex("TeamID");
-
-                    b.HasIndex("UserTeamsID");
 
                     b.ToTable("Players");
                 });
@@ -220,6 +216,19 @@ namespace NbaRosManagementTool.Data.Migrations
                     b.HasKey("ID");
 
                     b.ToTable("Teams");
+                });
+
+            modelBuilder.Entity("NbaRosManagementTool.Models.UserPlayers", b =>
+                {
+                    b.Property<int>("PlayerID");
+
+                    b.Property<int>("UserTeamsID");
+
+                    b.HasKey("PlayerID", "UserTeamsID");
+
+                    b.HasIndex("UserTeamsID");
+
+                    b.ToTable("UserPlayers");
                 });
 
             modelBuilder.Entity("NbaRosManagementTool.Models.UserTeams", b =>
@@ -287,10 +296,19 @@ namespace NbaRosManagementTool.Data.Migrations
                         .WithMany("Roster")
                         .HasForeignKey("TeamID")
                         .OnDelete(DeleteBehavior.Cascade);
+                });
 
-                    b.HasOne("NbaRosManagementTool.Models.UserTeams")
-                        .WithMany("Roster")
-                        .HasForeignKey("UserTeamsID");
+            modelBuilder.Entity("NbaRosManagementTool.Models.UserPlayers", b =>
+                {
+                    b.HasOne("NbaRosManagementTool.Models.Player", "Player")
+                        .WithMany()
+                        .HasForeignKey("PlayerID")
+                        .OnDelete(DeleteBehavior.Cascade);
+
+                    b.HasOne("NbaRosManagementTool.Models.UserTeams", "UserTeam")
+                        .WithMany("theRoster")
+                        .HasForeignKey("UserTeamsID")
+                        .OnDelete(DeleteBehavior.Cascade);
                 });
 
             modelBuilder.Entity("NbaRosManagementTool.Models.UserTeams", b =>

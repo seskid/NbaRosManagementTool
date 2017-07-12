@@ -24,8 +24,9 @@ namespace NbaRosManagementTool.Controllers
 
         public IActionResult Index(int id)
         {
-           return View();
 
+            UserViewModel userLoginViewModel = new UserViewModel(id,context);
+            return View(userLoginViewModel);
         }
 
 

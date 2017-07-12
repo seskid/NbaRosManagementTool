@@ -47,6 +47,7 @@ namespace NbaRosManagementTool
                 .AddEntityFrameworkStores<NbaDbContext>()
                 .AddDefaultTokenProviders();
 
+
             services.AddMvc();
 
             // Add application services.

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using NbaRosManagementTool.Data;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -23,8 +24,5 @@ namespace NbaRosManagementTool.Models
 
         //creates a forgein key relationship with the Team class 
         public int TeamID { get; set; }
-        
-
-        
-    }
+     }
 }
