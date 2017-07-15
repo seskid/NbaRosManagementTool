@@ -5,6 +5,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.ComponentModel.DataAnnotations;
 using NbaRosManagementTool.Models;
+using NbaRosManagementTool.Data;
 
 namespace NbaRosManagementTool.ViewModels
 {
@@ -14,31 +15,40 @@ namespace NbaRosManagementTool.ViewModels
         [Display(Name = "Teams")]
         public int TeamID { get; set; }
 
+        private readonly NbaDbContext context;
+
         public List<SelectListItem> TeamList { get; set; }
+
+        public List<Player> PlayerList { get; set; }
 
         public InitialLoginViewModel() { }
 
-        public InitialLoginViewModel(IEnumerable<Team> teams)
+        public InitialLoginViewModel(IEnumerable<Team> teams, NbaDbContext dbContext)
         {
 
-
-
-            // <option value="0">Hard</option>
+            context = dbContext;
             TeamList = new List<SelectListItem>();
 
             foreach (Team teamItems in teams)
             {
                 TeamList.Add(new SelectListItem
-                    {
-                        Value = teamItems.ID.ToString(),
-                        Text = teamItems.CityName + " " + teamItems.TeamName
-                    });
-                
+                {
+                    Value = teamItems.ID.ToString(),
+                    Text = teamItems.CityName + " " + teamItems.TeamName
+                });
+
             }
-
-            //TeamList.RemoveAt(TeamList.Count() - 1);
-
-
+            TeamID = 1;
+            TeamList.RemoveAt(TeamList.Count() - 1);
         }
+
+        public List<Player> getPlayers(int teamID)
+        {
+            PlayerList = new List<Player>();
+            PlayerList = context.Players.Where(p => p.TeamID == teamID).ToList();
+            return PlayerList;
+        }
+
+       
     }
 }

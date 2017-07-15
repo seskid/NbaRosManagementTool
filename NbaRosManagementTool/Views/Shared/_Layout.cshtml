@@ -7,8 +7,8 @@
     <title>@ViewData["Title"] - NBA Roster Manaagement Tool</title>
 
     <environment names="Development">
-        <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.css" />
-        <link rel="stylesheet" href="~/css/site.css" />
+        <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.css?v1" />
+        <link rel="stylesheet" href="~/css/site.css?v1" />
     </environment>
     <environment names="Staging,Production">
         <link rel="stylesheet" href="https://ajax.aspnetcdn.com/ajax/bootstrap/3.3.7/css/bootstrap.min.css"
@@ -41,6 +41,8 @@
     </nav>
     <div class="container body-content">
         @RenderBody()
+    </div>
+    <div class="to-bottom">
         <hr />
         <footer>
             <p>&copy; 2017 - NBA ROSTER MANAGEMENT TOOL </p>
@@ -69,5 +71,6 @@
     </environment>
 
     @RenderSection("Scripts", required: false)
-</body>
+ </body>
+
 </html>

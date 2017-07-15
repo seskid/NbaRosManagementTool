@@ -178,15 +178,11 @@ namespace NbaRosManagementTool.Data.Migrations
                     b.Property<int>("ID")
                         .ValueGeneratedOnAdd();
 
-                    b.Property<decimal>("CapHold");
-
                     b.Property<string>("FirstName");
 
                     b.Property<string>("LastName");
 
-                    b.Property<double>("PPG");
-
-                    b.Property<bool>("Restricted");
+                    b.Property<int>("PlayerRating");
 
                     b.Property<decimal>("Salary");
 

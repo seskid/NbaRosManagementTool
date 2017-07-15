@@ -1,5 +1,6 @@
 ﻿@using NbaRosManagementTool.Models;
 @model NbaRosManagementTool.ViewModels.UserViewModel
+
 @{
     ViewData["Title"] = "My team";
 }
@@ -15,19 +16,43 @@
 }
 else
 {
- 
-   foreach(Player p in Model.thePlayers)
-    {
-   
-        <label for="@p.ID">@p.FirstName@p.LastName  @p.Salary  </label>
-        <input type="checkbox" name="playerIds" id="@p.ID" value="@p.ID" />
+    
        
-        <br />
-    }
+        <table class="table-striped">
+            <thead>
+              <tr>
+              <th>Players</th>
+               <th>PPG</th>
+              <th>Salary</th>
+              </tr>
+            </thead>
+            <tbody>
+                @foreach (Player p in Model.thePlayers)
+                {
 
-    <button type="button">Trade Player(s)</button>    <button type="button">Sign a free agrent</button>    <button type="button">Release a player</button>
+                    <tr>
+                        <td> @p.FirstName @p.LastName</td>
+                        <td>@p.PPG</td>
+                        <td> @p.Salary</td>
+                        <td><input type="checkbox" name="playerIds" id="@p.ID" value="@p.ID" /></td>
+
+                    </tr>
+                    
+                }
+            </tbody>
+          </table>
+  
+    
+    
+
 
 }
+             
+             <p>Cap Space Team Payroll</p>
+            <p>@Model.userTeam.CapSpace  @Model.userTeam.TeamPayroll</p>
+            <button type="button">Trade Player(s)</button>    <button type="button">Sign a free agrent</button>    <button type="button">Release a player</button>
+
+
 
 
 

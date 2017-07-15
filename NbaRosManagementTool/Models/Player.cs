@@ -14,13 +14,9 @@ namespace NbaRosManagementTool.Models
 
         public string LastName { get; set; }
 
-        public double PPG { get; set; }
+        public int PlayerRating { get; set; }
 
         public decimal Salary { get; set; }
-
-        public bool Restricted  { get; set; }
-
-        public decimal CapHold { get; set; }
 
         //creates a forgein key relationship with the Team class 
         public int TeamID { get; set; }

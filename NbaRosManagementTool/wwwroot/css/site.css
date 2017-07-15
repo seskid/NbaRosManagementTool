@@ -48,3 +48,33 @@ textarea {
         display: none;
     }
 }
+
+div.to-bottom {
+    position: fixed;
+    bottom: 70px;
+    left: 70px;
+}
+
+div.far-right {
+    position: fixed;
+    top: 300px;
+    right: 200px;
+}
+
+div.left-middle {
+    position: fixed;
+    top: 300px;
+    left: 200px;
+}
+
+div.right-middle {
+    position: fixed;
+    top: 300px;
+    left: 700px;
+}
+
+tr.stathead{
+    
+}
+
+

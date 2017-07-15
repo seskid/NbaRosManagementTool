@@ -2,21 +2,63 @@
 @using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 
 @{
-    ViewData["Title"] = "Pick your team";
+    ViewData["Title"] = "Choose your players";
+    Model.PlayerList = Model.getPlayers(Model.TeamID);
 }
 
-<h1>Pick your favorite team.</h1>
+<div class="container">
+     <div class="far-right">
+         <h2>Choose your players.</h2>
+         <label asp-for="TeamID"></label>
+         <select asp-for="TeamID" asp-items="Model.TeamList"></select>
+         <span asp-validation-for="TeamID"></span>
+       
+     </div>
+ </div>
+<div class="right-middle">
+    <h2>Cleveland Cavs Roster</h2>
+    <table cellspacing="1" cellpadding="3" class="table-striped">
+        <tbody>
+            <tr>
+                <th>Team Roster</th>
+            </tr>
+            <tr>
+                <th>Player</th>
+                <th class="col-lg-4">Player Rating</th>
+                <th class="col-lg-6">Salary</th>
+            </tr>
+            @foreach (Player p in Model.PlayerList)
+            {
+                <tr>
+                    <td>@p.FirstName @p.LastName</td>
+                    <td class="col-lg-2">@p.PlayerRating</td>
+                    <td>@p.Salary</td>
+                    <td><input type="radio" value="players" /></td>
+                </tr>
+            }
+        </tbody>
+    </table>
+    <input type="submit" value="Add Player(s)" />
+</div>
+<div class="left-middle">
+    <h2>My Team</h2>
+    <table cellspacing="1" cellpadding="3" class="table-striped">
+        <tbody>
+            <tr>
+                <th>Team Roster</th>
+            </tr>
+            <tr>
+                <th>Player</th>
+                <th class="col-lg-4">Player Rating</th>
+                <th class="col-lg-6">Salary</th>
+            </tr>
+            <tr>
+                <td>@Model.TeamID</td>
+            </tr>
+        </tbody>
+    </table>
+    <input type="submit" value="Submit Team" />
+</div>
 
 
-<form asp-controller="InitialLogin" asp-action="AddAsync" method="post">
-
-    <div class="form-group">
-        <label asp-for="TeamID"></label>
-        <select asp-for="TeamID" asp-items="Model.TeamList"></select>
-        <span asp-validation-for="TeamID"></span>
-   </div>
-
-    <input type="submit" value="Submit" />
-
-</form>
 

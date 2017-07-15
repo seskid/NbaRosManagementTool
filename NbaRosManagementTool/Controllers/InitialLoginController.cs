@@ -41,7 +41,7 @@ namespace NbaRosManagementTool.Controllers
             {
                 //build list of teams to select from 
                 List<Team> teams = context.Teams.ToList();
-                InitialLoginViewModel initialLoginViewModel = new InitialLoginViewModel(teams);
+                InitialLoginViewModel initialLoginViewModel = new InitialLoginViewModel(teams,context);
                 return View(initialLoginViewModel);
 
             }
@@ -64,30 +64,6 @@ namespace NbaRosManagementTool.Controllers
                 var claim = claimsIdentity.FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier);
                 var theUserID = claim.Value;
                 var currentUser = await _userManager.FindByIdAsync(theUserID);
-
-                //get team user selected and create list of players team has. 
-                Team initTeam = context.Teams.Single(t => t.ID == initialLoginViewModel.TeamID);
-                List<Player> thePlayers = context.Players.Where(p => p.TeamID == initTeam.ID).ToList();
-
-                foreach(Player p in thePlayers)
-                {
-                    UserPlayers userPlayers = new UserPlayers();
-                    userPlayers.PlayerID = p.ID;
-                    userPlayers.UserTeamsID = userTeam.ID;
-                    userTeam.theRoster.Add(userPlayers);
-                    context.UserPlayers.Add(userPlayers);
-                }
-
-                //context.SaveChanges();
-
-                userTeam.CityName = initTeam.CityName;
-                userTeam.TeamName = initTeam.TeamName;
-                userTeam.TeamPayroll = initTeam.TeamPayroll;
-                userTeam.CapSpace = initTeam.CapSpace;
-                userTeam.User = currentUser;
-                context.UserTeams.Add(userTeam);
-                context.SaveChanges();
-
 
                 String url = String.Format("/User/?id={0}", userTeam.ID);
                 return Redirect(url);
