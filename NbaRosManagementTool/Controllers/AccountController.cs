@@ -83,7 +83,7 @@ namespace NbaRosManagementTool.Controllers
                 if (result.Succeeded)
                 {
                      _logger.LogInformation(1, "User logged in.");
-                     return Redirect("/InitialLogin");
+                     return Redirect("/InitialLogin/");
                 }
                 if (result.RequiresTwoFactor)
                 {

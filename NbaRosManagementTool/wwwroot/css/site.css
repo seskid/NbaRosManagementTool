@@ -73,8 +73,14 @@ div.right-middle {
     left: 700px;
 }
 
-tr.stathead{
-    
+div.left-center {
+    position: fixed;
+    top: 300px;
+    left: 500px;
 }
+
+
+
+
 
 

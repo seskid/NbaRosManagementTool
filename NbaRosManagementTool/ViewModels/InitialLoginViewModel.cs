@@ -6,6 +6,8 @@ using System.Threading.Tasks;
 using System.ComponentModel.DataAnnotations;
 using NbaRosManagementTool.Models;
 using NbaRosManagementTool.Data;
+using Microsoft.AspNetCore.Mvc;
+using System.Security.Claims;
 
 namespace NbaRosManagementTool.ViewModels
 {
@@ -21,24 +23,35 @@ namespace NbaRosManagementTool.ViewModels
 
         public List<Player> PlayerList { get; set; }
 
+        public Team theTeam { get; set; }
+
+        public List<Player> userPlayerList { get; set; }
+
+        public UserTeams theUserTeam { get; set; }
+
         public InitialLoginViewModel() { }
 
-        public InitialLoginViewModel(IEnumerable<Team> teams, NbaDbContext dbContext)
+        public InitialLoginViewModel(IEnumerable<Team> teams, NbaDbContext dbContext,int id)
         {
 
             context = dbContext;
             TeamList = new List<SelectListItem>();
+            TeamID = id;
+            theTeam = context.Teams.Single(t => t.ID == id);
+            
 
             foreach (Team teamItems in teams)
             {
+                String url = String.Format("/InitialLogin/Team/?id={0}", teamItems.ID);
                 TeamList.Add(new SelectListItem
                 {
-                    Value = teamItems.ID.ToString(),
+                    Value = url,
                     Text = teamItems.CityName + " " + teamItems.TeamName
                 });
 
             }
-            TeamID = 1;
+            
+            //remove free agents from list 
             TeamList.RemoveAt(TeamList.Count() - 1);
         }
 
@@ -48,6 +61,14 @@ namespace NbaRosManagementTool.ViewModels
             PlayerList = context.Players.Where(p => p.TeamID == teamID).ToList();
             return PlayerList;
         }
+
+
+      
+
+
+
+
+
 
        
     }

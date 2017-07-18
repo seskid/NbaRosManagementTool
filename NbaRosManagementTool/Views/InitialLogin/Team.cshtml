@@ -1,0 +1,80 @@
+﻿@model NbaRosManagementTool.ViewModels.InitialLoginViewModel
+@using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+
+@{
+    ViewData["Title"] = "Choose your players";
+    Model.PlayerList = Model.getPlayers(Model.TeamID);
+}
+
+<div class="container">
+    <div class="far-right">
+        <h2>Choose your players.</h2>
+        <label asp-for="TeamID"></label>
+        <select asp-for="TeamID" asp-items="Model.TeamList" onchange="javascript: location.href = this.value;"></select>
+        <span asp-validation-for="TeamID"></span>
+    </div>
+</div>
+<form asp-controller="InitialLogin" asp-action="Add" method="post">
+    <div class="right-middle">
+        <h2>@Model.theTeam.CityName @Model.theTeam.TeamName Roster</h2>
+        <table cellspacing="1" cellpadding="3" class="table-striped">
+            <tbody>
+                <tr>
+                    <th>Team Roster</th>
+                </tr>
+                <tr>
+                    <th>Player</th>
+                    <th class="col-lg-3">Player Rating</th>
+                    <th class="col-lg-4">Salary</th>
+                </tr>
+                @foreach (Player p in Model.PlayerList)
+                {
+                    <tr>
+                        <td>@p.FirstName @p.LastName</td>
+                        <td class="col-lg-3">@p.PlayerRating</td>
+                        <td>@p.Salary</td>
+                        <td><input type="checkbox" id="@p.ID" name="players" value="@p.ID" /></td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+        <input type="hidden" id="@Model.theUserTeam.ID" name="userTeamID" value="@Model.theUserTeam.ID" />
+        <input type="submit" value="Add Player(s)" />
+    </div>
+</form>
+<form asp-controller="InitialLogin" asp-action="Remove" method="post">
+    <div class="left-middle">
+        <h2>My Team - @Model.theUserTeam.CityName @Model.theUserTeam.TeamName</h2>
+        <table cellspacing="1" cellpadding="3" class="table-striped">
+            <tbody>
+                <tr>
+                    <th>Team Roster</th>
+                </tr>
+                <tr>
+                    <th>Player</th>
+                    <th class="col-lg-3">Player Rating</th>
+                    <th class="col-lg-4">Salary</th>
+                </tr>
+                @foreach (Player p in Model.userPlayerList)
+                {
+                    <tr>
+                        <td>@p.FirstName @p.LastName</td>
+                        <td class="col-lg-3">@p.PlayerRating</td>
+                        <td>@p.Salary</td>
+                        <td><input type="checkbox" id="@p.ID" name="players" value="@p.ID" /></td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+        <input type="hidden" id="@Model.theUserTeam.ID" name="userTeamID" value="@Model.theUserTeam.ID" />
+        <button type="submit" name="action" value="submit">Submit Team</button>
+        <button type="submit" name="action" value="release">Release Player(s)</button>
+        <p>-Roster has to have minimum of 13 players, 15 max</p>
+        <p>-Total salary must be under cap to submit team</p>
+    </div>
+</form>
+  
+
+
+
+    

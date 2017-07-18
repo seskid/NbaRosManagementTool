@@ -20,6 +20,16 @@ namespace NbaRosManagementTool.Models
         public List<UserPlayers> theRoster { get; set; } = new List<UserPlayers>();
 
         public virtual ApplicationUser User { get; set; }
+
+        public UserTeams() { }
+
+        public UserTeams(string cityname,string teamname)
+        {
+            CityName = cityname;
+            TeamName = teamname;
+            CapSpace = 105000000;
+            TeamPayroll = 0;
+        }
         
     }
 }

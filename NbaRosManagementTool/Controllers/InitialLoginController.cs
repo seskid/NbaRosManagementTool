@@ -17,6 +17,7 @@ namespace NbaRosManagementTool.Controllers
     {
         private readonly NbaDbContext context;
         private readonly UserManager<ApplicationUser> _userManager;
+        
      
 
 
@@ -32,6 +33,7 @@ namespace NbaRosManagementTool.Controllers
             var user = await _userManager.GetUserAsync(currentUser);
 
             UserTeams userTeam = new UserTeams();
+            
             //route user to their team if they have one 
             try
             {
@@ -39,38 +41,121 @@ namespace NbaRosManagementTool.Controllers
             }
             catch (InvalidOperationException e)
             {
-                //build list of teams to select from 
-                List<Team> teams = context.Teams.ToList();
-                InitialLoginViewModel initialLoginViewModel = new InitialLoginViewModel(teams,context);
+                InitialLoginViewModel initialLoginViewModel = new InitialLoginViewModel();
                 return View(initialLoginViewModel);
 
             }
-            String url = String.Format("/User/?id={0}", userTeam.ID);
+            String url = String.Format("/InitialLogin/Team/?id=1");
             return Redirect(url);
            
             
         }
 
         [HttpPost]
-        public async Task<IActionResult> AddAsync(InitialLoginViewModel initialLoginViewModel)
+        public async Task<IActionResult> Team(string cityName, string teamName,int id)
         {
+            UserTeams userTeam = new UserTeams(cityName, teamName);
+            var claimsIdentity = (ClaimsIdentity)this.User.Identity;
+            var claim = claimsIdentity.FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier);
+            var theUserID = claim.Value;
+            var currentUser = await _userManager.FindByIdAsync(theUserID);
 
-            if (ModelState.IsValid)
+            //initial user setup 
+            userTeam.User = currentUser;
+            context.UserTeams.Add(userTeam);
+            context.SaveChanges();
+            List<Team> teams = context.Teams.ToList();
+            InitialLoginViewModel initialLoginViewModel = new InitialLoginViewModel(teams, context,id);
+            initialLoginViewModel.theUserTeam = userTeam;
+            return View(initialLoginViewModel);
+
+
+        }
+
+        public IActionResult Team(int id)
+        {
+            var claimsIdentity = (ClaimsIdentity)this.User.Identity;
+            var claim = claimsIdentity.FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier);
+            var theUserID = claim.Value;
+         
+            
+            List<Team> teams = context.Teams.ToList();
+            InitialLoginViewModel initialLoginViewModel = new InitialLoginViewModel(teams, context, id);
+            initialLoginViewModel.theUserTeam = new UserTeams();
+            initialLoginViewModel.userPlayerList = new List<Player>();
+
+            //get players that belong to user
+            initialLoginViewModel.theUserTeam = context.UserTeams.Single(u => u.User.Id == theUserID);
+            List<UserPlayers> players = context.UserPlayers.Where(p => p.UserTeamsID == initialLoginViewModel.theUserTeam.ID).ToList();
+
+            //load players in list
+            foreach(UserPlayers p in players)
             {
-                UserTeams userTeam = new UserTeams();
-               
-
-                var claimsIdentity = (ClaimsIdentity)this.User.Identity;
-                var claim = claimsIdentity.FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier);
-                var theUserID = claim.Value;
-                var currentUser = await _userManager.FindByIdAsync(theUserID);
-
-                String url = String.Format("/User/?id={0}", userTeam.ID);
-                return Redirect(url);
+                initialLoginViewModel.userPlayerList.Add(context.Players.Single(pl => pl.ID == p.PlayerID));
             }
 
-            return Redirect("/InitialLogin/");
+            return View(initialLoginViewModel);
         }
+
+        [HttpPost]
+        public IActionResult Add(int[] players,int userTeamID,InitialLoginViewModel initialLoginViewModel)
+        {
+            int[] playersSelected = players;
+            initialLoginViewModel.theUserTeam = new UserTeams();
+            initialLoginViewModel.theUserTeam = context.UserTeams.Single(u => u.ID == userTeamID);
+
+           
+            initialLoginViewModel.userPlayerList = new List<Player>();
+
+            foreach(int p in playersSelected)
+            {
+                UserPlayers userPlayers = new UserPlayers();
+                userPlayers.PlayerID = p;
+                userPlayers.UserTeamsID = initialLoginViewModel.theUserTeam.ID;
+                context.UserPlayers.Add(userPlayers);
+                initialLoginViewModel.userPlayerList.Add(context.Players.Single(pl => pl.ID == p));
+             }
+
+            context.SaveChanges();
+            return Redirect("/InitialLogin/Team/?id=1");
+        }
+
+        [HttpPost]
+        public IActionResult Remove(int[] players,string action,int userTeamID,InitialLoginViewModel initialLoginViewModel)
+        {
+            int[] playersSelected = players;
+
+            if (action == "release")
+            {
+                foreach (int p in playersSelected)
+                {
+                    UserPlayers userPlayers = context.UserPlayers.Single(pl => pl.PlayerID == p);
+                    context.UserPlayers.Remove(userPlayers);
+                }
+            }
+            else
+            {
+                String url = String.Format("/User/Team?id={0}", userTeamID);
+                return Redirect(url);
+               
+            }
+
+            context.SaveChanges();
+            return Redirect("/InitialLogin/Team/?id=1");
+        }
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

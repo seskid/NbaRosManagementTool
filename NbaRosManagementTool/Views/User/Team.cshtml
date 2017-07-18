@@ -1,0 +1,32 @@
+﻿@model NbaRosManagementTool.ViewModels.InitialLoginViewModel
+@using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+
+@{
+    ViewData["Title"] = "@Model.theUserTeam.CityName @Model.theUserTeam.TeamName";
+}
+
+
+<div class="left-center">
+    <h2>My Team - @Model.theUserTeam.CityName @Model.theUserTeam.TeamName</h2><h3 class="form-inline">Team Rating</h3>
+    <table cellspacing="1" cellpadding="3" class="table-striped">
+        <tbody>
+            <tr>
+                <th>Team Roster</th>
+            </tr>
+            <tr>
+                <th>Player</th>
+                <th class="col-lg-3">Player Rating</th>
+                <th class="col-lg-4">Salary</th>
+            </tr>
+            @foreach (Player p in Model.userPlayerList)
+            {
+                <tr>
+                    <td>@p.FirstName @p.LastName</td>
+                    <td class="col-lg-3">@p.PlayerRating</td>
+                    <td>@p.Salary</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
+

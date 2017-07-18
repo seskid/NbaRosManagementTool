@@ -16,9 +16,7 @@
 }
 else
 {
-    
-       
-        <table class="table-striped">
+    <table class="table-striped">
             <thead>
               <tr>
               <th>Players</th>
@@ -29,28 +27,21 @@ else
             <tbody>
                 @foreach (Player p in Model.thePlayers)
                 {
-
                     <tr>
                         <td> @p.FirstName @p.LastName</td>
-                        <td>@p.PPG</td>
+                        <td>@p.PlayerRating</td>
                         <td> @p.Salary</td>
                         <td><input type="checkbox" name="playerIds" id="@p.ID" value="@p.ID" /></td>
 
                     </tr>
-                    
                 }
             </tbody>
           </table>
-  
-    
-    
-
-
-}
+ }
              
-             <p>Cap Space Team Payroll</p>
+            <p>Cap Space Team Payroll</p>
             <p>@Model.userTeam.CapSpace  @Model.userTeam.TeamPayroll</p>
-            <button type="button">Trade Player(s)</button>    <button type="button">Sign a free agrent</button>    <button type="button">Release a player</button>
+            <button type="button">Sign a free agrent</button>    <button type="button">Release a player</button>
 
 
 
