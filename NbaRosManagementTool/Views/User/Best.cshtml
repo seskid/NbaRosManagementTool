@@ -1,0 +1,9 @@
+﻿@model NbaRosManagementTool.ViewModels.UserViewModel
+
+<h1>Best Team Leaderboard</h1> <h3>Team Rating</h3>
+<hr />
+
+@foreach (KeyValuePair<string,string> item in Model.bestTeams)
+{
+    <p>@item.Value @item.Key</p>
+}

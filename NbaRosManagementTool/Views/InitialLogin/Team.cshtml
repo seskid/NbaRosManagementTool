@@ -10,14 +10,18 @@
     <div class="far-right">
         <h2>Choose your players.</h2>
         <label asp-for="TeamID"></label>
-        <select asp-for="TeamID" asp-items="Model.TeamList" onchange="javascript: location.href = this.value;"></select>
+        <select asp-for="TeamID" asp-items="Model.TeamList" onchange="javascript: location.href = this.value;">
+            <option selected="selected">
+              @Model.theTeam.CityName @Model.theTeam.TeamName
+            </option>
+        </select>
         <span asp-validation-for="TeamID"></span>
     </div>
 </div>
 <form asp-controller="InitialLogin" asp-action="Add" method="post">
     <div class="right-middle">
         <h2>@Model.theTeam.CityName @Model.theTeam.TeamName Roster</h2>
-        <table cellspacing="1" cellpadding="3" class="table-striped">
+        <table class="table-bordered table-striped no-transparent">
             <tbody>
                 <tr>
                     <th>Team Roster</th>
@@ -36,16 +40,16 @@
                         <td><input type="checkbox" id="@p.ID" name="players" value="@p.ID" /></td>
                     </tr>
                 }
-            </tbody>
+               </tbody>
         </table>
         <input type="hidden" id="@Model.theUserTeam.ID" name="userTeamID" value="@Model.theUserTeam.ID" />
-        <input type="submit" value="Add Player(s)" />
+        <input type="submit" value="Add Player(s)" /><p class="error">@ViewBag.error</p>
     </div>
 </form>
 <form asp-controller="InitialLogin" asp-action="Remove" method="post">
     <div class="left-middle">
         <h2>My Team - @Model.theUserTeam.CityName @Model.theUserTeam.TeamName</h2>
-        <table cellspacing="1" cellpadding="3" class="table-striped">
+        <table class="table-bordered table-striped no-transparent">
             <tbody>
                 <tr>
                     <th>Team Roster</th>
@@ -64,10 +68,38 @@
                         <td><input type="checkbox" id="@p.ID" name="players" value="@p.ID" /></td>
                     </tr>
                 }
+                @for (int i = 0; i < 15 - Model.userPlayerList.Count; i++)
+                {
+                    <tr>
+                        <td>-</td>
+                        <td class="col-lg-3">-</td>
+                        <td>-</td>
+                    </tr>
+                }
+                <tr>
+                    <th>Salary Cap</th>
+                    <th class="col-lg-3">Cap space</th>
+                    <th class="col-lg-4">Total Salaries</th>
+                </tr>
+                <tr>
+                    <td>105,000,000</td>
+                    @if (@Model.theUserTeam.CapSpace > 0)
+                    {
+                        <td class="col-lg-3 green ">@Model.theUserTeam.CapSpace</td>
+                    }
+                    else
+                    {
+                        <td class="col-lg-3 in_the_red ">@Model.theUserTeam.CapSpace</td>
+                    }
+
+                    <td>@Model.theUserTeam.TeamPayroll</td>
+                </tr>
+
+
+
             </tbody>
         </table>
         <input type="hidden" id="@Model.theUserTeam.ID" name="userTeamID" value="@Model.theUserTeam.ID" />
-        <button type="submit" name="action" value="submit">Submit Team</button>
         <button type="submit" name="action" value="release">Release Player(s)</button>
         <p>-Roster has to have minimum of 13 players, 15 max</p>
         <p>-Total salary must be under cap to submit team</p>

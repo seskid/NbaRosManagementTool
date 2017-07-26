@@ -18,9 +18,10 @@ namespace NbaRosManagementTool.Controllers
 
         protected UserManager<ApplicationUser> UserManager { get; set; }
 
-        public UserController(NbaDbContext dbContext)
+        public UserController(NbaDbContext dbContext, UserManager<ApplicationUser> userManager)
         {
             context = dbContext;
+            UserManager = userManager;
         }
 
         public IActionResult Index()
@@ -42,22 +43,53 @@ namespace NbaRosManagementTool.Controllers
 
         public IActionResult Team(int id)
         {
-            InitialLoginViewModel initialLoginViewModel = new InitialLoginViewModel();
+            UserViewModel userViewModel = new UserViewModel();
 
-            initialLoginViewModel.theUserTeam = context.UserTeams.Single(t => t.ID == id);
-            initialLoginViewModel.userPlayerList = new List<Player>();
+            userViewModel.theUserTeam = context.UserTeams.Single(t => t.ID == id);
+            userViewModel.userPlayerList = new List<Player>();
 
             //get players that belong to user
-            List<UserPlayers> players = context.UserPlayers.Where(p => p.UserTeamsID == initialLoginViewModel.theUserTeam.ID).ToList();
+            List<UserPlayers> players = context.UserPlayers.Where(p => p.UserTeamsID == userViewModel.theUserTeam.ID).ToList();
 
             //load players in list
             foreach (UserPlayers p in players)
             {
-                initialLoginViewModel.userPlayerList.Add(context.Players.Single(pl => pl.ID == p.PlayerID));
+                userViewModel.userPlayerList.Add(context.Players.Single(pl => pl.ID == p.PlayerID));
             }
 
-            return View(initialLoginViewModel);
+            return View(userViewModel);
         }
+
+        public IActionResult Best()
+        {
+            
+            UserViewModel userViewModel = new UserViewModel();
+            userViewModel.bestTeams = new Dictionary<string, string>();
+
+            string teamNameFull = "";
+            IQueryable<ApplicationUser> thelist=UserManager.Users;
+            foreach(ApplicationUser u in thelist)
+            {
+                userViewModel.theUserTeam = new UserTeams();
+                userViewModel.theUserTeam = context.UserTeams.SingleOrDefault(t => t.User == u);
+                if (userViewModel.theUserTeam != null)
+                {
+                    teamNameFull = userViewModel.theUserTeam.CityName + " " + userViewModel.theUserTeam.TeamName;
+                    userViewModel.bestTeams.Add(u.UserName, teamNameFull);
+                }
+            }
+
+            return View(userViewModel);
+        }
+
+        public IActionResult FreeAgent()
+        {
+            return View();
+        }
+
+
+
+
 
 
 

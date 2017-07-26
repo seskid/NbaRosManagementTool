@@ -79,8 +79,24 @@ div.left-center {
     left: 500px;
 }
 
+body.background{
+    background-image:url(../images/background-image-retina-CB5.png)
 
+}
 
+p.error{
+    color:red;
+}
 
+td.green{
+    color:forestgreen;
+}
 
+td.in_the_red{
+    color:red;
+}
+
+.no-transparent{
+    background-color:lightgray;
+}
 

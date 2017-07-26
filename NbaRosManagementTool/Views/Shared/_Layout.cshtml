@@ -8,7 +8,7 @@
 
     <environment names="Development">
         <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.css?v1" />
-        <link rel="stylesheet" href="~/css/site.css?id=1234" />
+        <link rel="stylesheet" href="~/css/site.css?v14" />
     </environment>
     <environment names="Staging,Production">
         <link rel="stylesheet" href="https://ajax.aspnetcdn.com/ajax/bootstrap/3.3.7/css/bootstrap.min.css"
@@ -18,7 +18,7 @@
     </environment>
     @Html.Raw(JavaScriptSnippet.FullScript)
 </head>
-<body>
+<body class="background">
     <nav class="navbar navbar-inverse navbar-fixed-top">
         <div class="container">
             <div class="navbar-header">
@@ -34,8 +34,8 @@
                 <ul class="nav navbar-nav">
                     <li><a  asp-area="" asp-controller="User" asp-action="Index">My Team</a></li>
                     <li><a href="/InitialLogin/Team/?id=1">Manage Team</a></li>
-                    <li><a asp-area="" asp-controller="Home" asp-action="Contact">Free Agent List</a></li>
-                    <li><a asp-area="" asp-controller="Home" asp-action="Contact">Best Teams</a></li>
+                    <li><a asp-area="" asp-controller="User" asp-action="FreeAgent">Free Agent List</a></li>
+                    <li><a asp-area="" asp-controller="User" asp-action="Best">Best Teams</a></li>
                 </ul>
                 @await Html.PartialAsync("_LoginPartial")
             </div>

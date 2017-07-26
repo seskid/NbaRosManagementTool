@@ -51,6 +51,7 @@ namespace NbaRosManagementTool.ViewModels
 
             }
             
+         
             //remove free agents from list 
             TeamList.RemoveAt(TeamList.Count() - 1);
         }
@@ -61,15 +62,5 @@ namespace NbaRosManagementTool.ViewModels
             PlayerList = context.Players.Where(p => p.TeamID == teamID).ToList();
             return PlayerList;
         }
-
-
-      
-
-
-
-
-
-
-       
-    }
+     }
 }

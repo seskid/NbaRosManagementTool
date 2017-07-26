@@ -11,9 +11,15 @@ namespace NbaRosManagementTool.ViewModels
 
     public class UserViewModel
     {
-        public UserTeams userTeam{ get; set; }
+        public UserTeams theUserTeam{ get; set; }
 
         public List<Player> thePlayers { get; set; }
+
+        public List<Player> userPlayerList { get; set; }
+
+        public List<UserTeams> userTeams { get; set; }
+        
+        public Dictionary<string,string> bestTeams { get; set; }
 
         public UserViewModel() { }
 
@@ -22,21 +28,16 @@ namespace NbaRosManagementTool.ViewModels
         {
             thePlayers = new List<Player>();
 
-            userTeam = context.UserTeams.Single(u => u.ID == id);
-            userTeam.theRoster = context.UserPlayers.Where(p => p.UserTeamsID == id).ToList();
+            theUserTeam = context.UserTeams.Single(u => u.ID == id);
+            theUserTeam.theRoster = context.UserPlayers.Where(p => p.UserTeamsID == id).ToList();
 
             //load list with current players on team 
-            foreach(UserPlayers pl in userTeam.theRoster)
+            foreach(UserPlayers pl in theUserTeam.theRoster)
             {
                 thePlayers.Add(context.Players.Single(p => p.ID== pl.PlayerID));
             }
 
 
         }
-
-
-
-
-
     }
 }

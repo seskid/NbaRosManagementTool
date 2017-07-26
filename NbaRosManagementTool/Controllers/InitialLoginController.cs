@@ -67,12 +67,13 @@ namespace NbaRosManagementTool.Controllers
             List<Team> teams = context.Teams.ToList();
             InitialLoginViewModel initialLoginViewModel = new InitialLoginViewModel(teams, context,id);
             initialLoginViewModel.theUserTeam = userTeam;
+            initialLoginViewModel.userPlayerList = new List<Player>();
             return View(initialLoginViewModel);
 
 
         }
 
-        public IActionResult Team(int id)
+        public IActionResult Team(int id,string error="")
         {
             var claimsIdentity = (ClaimsIdentity)this.User.Identity;
             var claim = claimsIdentity.FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier);
@@ -94,6 +95,7 @@ namespace NbaRosManagementTool.Controllers
                 initialLoginViewModel.userPlayerList.Add(context.Players.Single(pl => pl.ID == p.PlayerID));
             }
 
+            ViewBag.error = error;
             return View(initialLoginViewModel);
         }
 
@@ -103,27 +105,43 @@ namespace NbaRosManagementTool.Controllers
             int[] playersSelected = players;
             initialLoginViewModel.theUserTeam = new UserTeams();
             initialLoginViewModel.theUserTeam = context.UserTeams.Single(u => u.ID == userTeamID);
-
-           
             initialLoginViewModel.userPlayerList = new List<Player>();
 
             foreach(int p in playersSelected)
             {
-                UserPlayers userPlayers = new UserPlayers();
-                userPlayers.PlayerID = p;
-                userPlayers.UserTeamsID = initialLoginViewModel.theUserTeam.ID;
-                context.UserPlayers.Add(userPlayers);
-                initialLoginViewModel.userPlayerList.Add(context.Players.Single(pl => pl.ID == p));
-             }
+                //test if player is already on team 
+                var userPl = context.UserPlayers.Find(p,userTeamID);
+                if (userPl == null)
+                {
+                    UserPlayers userPlayer = new UserPlayers();
+                    userPlayer.PlayerID = p;
+                    userPlayer.UserTeamsID = initialLoginViewModel.theUserTeam.ID;
+                    context.UserPlayers.Add(userPlayer);
+                    Player player = context.Players.Single(pl => pl.ID == p);
+                    initialLoginViewModel.userPlayerList.Add(player);
+                    initialLoginViewModel.theUserTeam.CapSpace = initialLoginViewModel.theUserTeam.CapSpace - player.Salary;
+                    initialLoginViewModel.theUserTeam.TeamPayroll = initialLoginViewModel.theUserTeam.TeamPayroll + player.Salary;
+                }
+                else
+                {
+                    string error= "Player is already on team";
+                    String url = String.Format("/InitialLogin/Team/?id=1&error={0}", error);
+                    return Redirect(url);
+                }
+            }
 
+          
             context.SaveChanges();
             return Redirect("/InitialLogin/Team/?id=1");
-        }
+       }
 
         [HttpPost]
         public IActionResult Remove(int[] players,string action,int userTeamID,InitialLoginViewModel initialLoginViewModel)
         {
             int[] playersSelected = players;
+            initialLoginViewModel.theUserTeam = new UserTeams();
+            initialLoginViewModel.theUserTeam = context.UserTeams.Single(u => u.ID == userTeamID);
+
 
             if (action == "release")
             {
@@ -131,6 +149,9 @@ namespace NbaRosManagementTool.Controllers
                 {
                     UserPlayers userPlayers = context.UserPlayers.Single(pl => pl.PlayerID == p);
                     context.UserPlayers.Remove(userPlayers);
+                    Player player = context.Players.Single(pl => pl.ID == p);
+                    initialLoginViewModel.theUserTeam.CapSpace = initialLoginViewModel.theUserTeam.CapSpace + player.Salary;
+                    initialLoginViewModel.theUserTeam.TeamPayroll = initialLoginViewModel.theUserTeam.TeamPayroll - player.Salary;
                 }
             }
             else
