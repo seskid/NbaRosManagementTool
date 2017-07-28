@@ -64,9 +64,12 @@ namespace NbaRosManagementTool.Controllers
         {
             
             UserViewModel userViewModel = new UserViewModel();
-            userViewModel.bestTeams = new Dictionary<string, string>();
-
-            string teamNameFull = "";
+            userViewModel.bestTeams = new List<KeyValuePair<int,UserTeams>>();
+            List<UserPlayers> userPlayers = new List<UserPlayers>();
+            Player player = new Player();
+            int totalRatings = 0;
+            int rating = 0;
+          
             IQueryable<ApplicationUser> thelist=UserManager.Users;
             foreach(ApplicationUser u in thelist)
             {
@@ -74,26 +77,31 @@ namespace NbaRosManagementTool.Controllers
                 userViewModel.theUserTeam = context.UserTeams.SingleOrDefault(t => t.User == u);
                 if (userViewModel.theUserTeam != null)
                 {
-                    teamNameFull = userViewModel.theUserTeam.CityName + " " + userViewModel.theUserTeam.TeamName;
-                    userViewModel.bestTeams.Add(u.UserName, teamNameFull);
+                    userPlayers = context.UserPlayers.Where(p => p.UserTeamsID == userViewModel.theUserTeam.ID).ToList();
+                    foreach (UserPlayers p in userPlayers)
+                    {
+                       player= context.Players.Single(pl => pl.ID == p.PlayerID);
+                       totalRatings = totalRatings + player.PlayerRating;
+                    }
+
+                    rating = totalRatings / userPlayers.Count;
+                    var team = new KeyValuePair<int,UserTeams>(rating,userViewModel.theUserTeam);
+                    userViewModel.bestTeams.Add(team);
                 }
+
+              
+                totalRatings = 0;
+                rating = 0;
             }
 
+            userViewModel.bestTeams.Reverse();
             return View(userViewModel);
         }
 
-        public IActionResult FreeAgent()
+        /*public IActionResult FreeAgent()
         {
             return View();
-        }
-
-
-
-
-
-
-
-
+        }*/
 
     }
 }

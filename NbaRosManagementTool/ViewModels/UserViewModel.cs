@@ -19,7 +19,7 @@ namespace NbaRosManagementTool.ViewModels
 
         public List<UserTeams> userTeams { get; set; }
         
-        public Dictionary<string,string> bestTeams { get; set; }
+        public List<KeyValuePair<int,UserTeams>> bestTeams { get; set; }
 
         public UserViewModel() { }
 
@@ -36,8 +36,6 @@ namespace NbaRosManagementTool.ViewModels
             {
                 thePlayers.Add(context.Players.Single(p => p.ID== pl.PlayerID));
             }
-
-
         }
     }
 }

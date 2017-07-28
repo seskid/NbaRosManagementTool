@@ -6,52 +6,55 @@
 }
 
 
-<div class="left-center">
-    <h2>My Team - @Model.theUserTeam.CityName @Model.theUserTeam.TeamName</h2><h3 class="form-inline">Team Rating - </h3>
-    <table class="table-bordered table-striped no-transparent">
-        <tbody>
-            <tr>
-                <th>Team Roster</th>
-            </tr>
-            <tr>
-                <th>Player</th>
-                <th class="col-lg-3">Player Rating</th>
-                <th class="col-lg-4">Salary</th>
-            </tr>
-            @foreach (Player p in Model.userPlayerList)
+<div class="container">
+    <div class="row">
+        <div class="Absolute-Center less">
+            <h2>My Team - @Model.theUserTeam.CityName @Model.theUserTeam.TeamName</h2><h3 class="form-inline">Team Rating - </h3>
+            <table class="table-bordered table-striped no-transparent">
+                <tbody>
+                    <tr>
+                        <th>Team Roster</th>
+                    </tr>
+                    <tr>
+                        <th>Player</th>
+                        <th class="col-lg-3">Player Rating</th>
+                        <th class="col-lg-4">Salary</th>
+                    </tr>
+                    @foreach (Player p in Model.userPlayerList)
             {
-                <tr>
-                    <td>@p.FirstName @p.LastName</td>
-                    <td class="col-lg-3">@p.PlayerRating</td>
-                    <td>@p.Salary</td>
-                </tr>
-            }
-            @for (int i = 0; i < 15 - Model.userPlayerList.Count; i++)
+                        <tr>
+                            <td>@p.FirstName @p.LastName</td>
+                            <td class="col-lg-3">@p.PlayerRating</td>
+                            <td>@p.Salary</td>
+                        </tr>
+                    }
+                    @for (int i = 0; i < 15 - Model.userPlayerList.Count; i++)
             {
-                <tr>
-                    <td>-</td>
-                    <td class="col-lg-3">-</td>
-                    <td>-</td>
-                </tr>
-            }
-            <tr>
-                <th>Salary Cap</th>
-                <th class="col-lg-3">Cap space</th>
-                <th class="col-lg-4">Total Salaries</th>
-            </tr>
-            <tr>
-                <td>105,000,000</td>
-                @if (@Model.theUserTeam.CapSpace > 0)
-                {
-                    <td class="col-lg-3 green ">@Model.theUserTeam.CapSpace</td>
-                }
-                else
-                {
-                    <td class="col-lg-3 in_the_red ">@Model.theUserTeam.CapSpace</td>
-                }
-                <td>@Model.theUserTeam.TeamPayroll</td>
-            </tr>
-        </tbody>
-    </table>
-</div>
-
+                        <tr>
+                            <td>-</td>
+                            <td class="col-lg-3">-</td>
+                            <td>-</td>
+                        </tr>
+                    }
+                    <tr>
+                        <th>Salary Cap</th>
+                        <th class="col-lg-3">Cap space</th>
+                        <th class="col-lg-4">Total Salaries</th>
+                    </tr>
+                    <tr>
+                        <td>105,000,000</td>
+                        @if (@Model.theUserTeam.CapSpace > 0)
+                        {
+                            <td class="col-lg-3 green ">@Model.theUserTeam.CapSpace</td>
+                        }
+                        else
+                        {
+                            <td class="col-lg-3 in_the_red ">@Model.theUserTeam.CapSpace</td>
+                        }
+                        <td>@Model.theUserTeam.TeamPayroll</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+     </div>
+  </div>

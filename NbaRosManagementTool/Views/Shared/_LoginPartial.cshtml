@@ -8,9 +8,10 @@
 {
     <form asp-area="" asp-controller="Account" asp-action="Logout" method="post" id="logoutForm" class="navbar-right">
         <ul class="nav navbar-nav navbar-right">
-            <li>
-                <a asp-area="" asp-controller="Manage" asp-action="Index" title="Manage">Manage Account</a>
-            </li>
+            <li><a asp-area="" asp-controller="User" asp-action="Best">Best Teams</a></li>
+            <li><a asp-area="" asp-controller="User" asp-action="Index">My Team</a></li>
+            <li><a href="/InitialLogin/Team/?id=1">Manage Team</a><li>
+            <li><a asp-area="" asp-controller="Manage" asp-action="Index" title="Manage">Manage Account</a></li>
             <li>
                 <button type="submit" class="btn btn-link navbar-btn navbar-link">Log out</button>
             </li>

@@ -6,21 +6,18 @@
     Model.PlayerList = Model.getPlayers(Model.TeamID);
 }
 
-<div class="container">
-    <div class="far-right">
-        <h2>Choose your players.</h2>
-        <label asp-for="TeamID"></label>
-        <select asp-for="TeamID" asp-items="Model.TeamList" onchange="javascript: location.href = this.value;">
-            <option selected="selected">
-              @Model.theTeam.CityName @Model.theTeam.TeamName
-            </option>
-        </select>
-        <span asp-validation-for="TeamID"></span>
-    </div>
-</div>
-<form asp-controller="InitialLogin" asp-action="Add" method="post">
-    <div class="right-middle">
+
+    <h2>Choose your players.</h2>
+    <label asp-for="TeamID"></label>
+    <select asp-for="TeamID" asp-items="Model.TeamList" onchange="javascript: location.href = this.value;">
+        <option selected="selected">
+            @Model.theTeam.CityName @Model.theTeam.TeamName
+        </option>
+    </select>
+    <span asp-validation-for="TeamID"></span>
+    <form asp-controller="InitialLogin" asp-action="Add" method="post">
         <h2>@Model.theTeam.CityName @Model.theTeam.TeamName Roster</h2>
+
         <table class="table-bordered table-striped no-transparent">
             <tbody>
                 <tr>
@@ -40,14 +37,14 @@
                         <td><input type="checkbox" id="@p.ID" name="players" value="@p.ID" /></td>
                     </tr>
                 }
-               </tbody>
+            </tbody>
         </table>
         <input type="hidden" id="@Model.theUserTeam.ID" name="userTeamID" value="@Model.theUserTeam.ID" />
         <input type="submit" value="Add Player(s)" /><p class="error">@ViewBag.error</p>
-    </div>
-</form>
-<form asp-controller="InitialLogin" asp-action="Remove" method="post">
-    <div class="left-middle">
+    </form>
+<div class="level">
+    <form asp-controller="InitialLogin" asp-action="Remove" method="post">
+
         <h2>My Team - @Model.theUserTeam.CityName @Model.theUserTeam.TeamName</h2>
         <table class="table-bordered table-striped no-transparent">
             <tbody>
@@ -94,19 +91,17 @@
 
                     <td>@Model.theUserTeam.TeamPayroll</td>
                 </tr>
-
-
-
             </tbody>
         </table>
         <input type="hidden" id="@Model.theUserTeam.ID" name="userTeamID" value="@Model.theUserTeam.ID" />
         <button type="submit" name="action" value="release">Release Player(s)</button>
-        <p>-Roster has to have minimum of 13 players, 15 max</p>
-        <p>-Total salary must be under cap to submit team</p>
-    </div>
-</form>
-  
+        <h4>Best teams list rules</h4>
+        <p>-Roster has to have minimum of 13 players, 15 max.</p>
+        <p>-Total salary must be under cap to submit team.</p>
+    </form>
+</div>
 
 
 
-    
+
+

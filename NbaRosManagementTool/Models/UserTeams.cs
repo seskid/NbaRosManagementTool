@@ -30,6 +30,5 @@ namespace NbaRosManagementTool.Models
             CapSpace = 105000000;
             TeamPayroll = 0;
         }
-        
     }
 }

@@ -103,6 +103,7 @@ namespace NbaRosManagementTool.Controllers
         public IActionResult Add(int[] players,int userTeamID,InitialLoginViewModel initialLoginViewModel)
         {
             int[] playersSelected = players;
+            IQueryable<UserPlayers> rosterList;
             initialLoginViewModel.theUserTeam = new UserTeams();
             initialLoginViewModel.theUserTeam = context.UserTeams.Single(u => u.ID == userTeamID);
             initialLoginViewModel.userPlayerList = new List<Player>();
@@ -113,6 +114,14 @@ namespace NbaRosManagementTool.Controllers
                 var userPl = context.UserPlayers.Find(p,userTeamID);
                 if (userPl == null)
                 {
+                    rosterList = context.UserPlayers.Where(rosterCount => rosterCount.UserTeamsID == initialLoginViewModel.theUserTeam.ID);
+                    if (rosterList.Count() > 14)
+                    {
+                        string error = "Roster can't exceed 15 players";
+                        String url = String.Format("/InitialLogin/Team/?id=1&error={0}", error);
+                        return Redirect(url);
+                    }
+
                     UserPlayers userPlayer = new UserPlayers();
                     userPlayer.PlayerID = p;
                     userPlayer.UserTeamsID = initialLoginViewModel.theUserTeam.ID;
@@ -147,7 +156,7 @@ namespace NbaRosManagementTool.Controllers
             {
                 foreach (int p in playersSelected)
                 {
-                    UserPlayers userPlayers = context.UserPlayers.Single(pl => pl.PlayerID == p);
+                    UserPlayers userPlayers = context.UserPlayers.Find(p,userTeamID);
                     context.UserPlayers.Remove(userPlayers);
                     Player player = context.Players.Single(pl => pl.ID == p);
                     initialLoginViewModel.theUserTeam.CapSpace = initialLoginViewModel.theUserTeam.CapSpace + player.Salary;
