@@ -92,19 +92,9 @@ table {
     background-color: transparent;
 }
 
-table {
-    counter-reset: rowNumber;
-}
-
-table tr {
-     counter-increment: rowNumber;
-}
- table td {
-     content: counter(rowNumber);
-     min-width: 1em;
-     margin-right: 0.5em;
-     text-align: center;
-    }
+sal.table td {
+    text-align: center;
+  }
 
  table th{
      text-align:center;
@@ -115,5 +105,35 @@ div.level{
     right:300px;
     top:150px;
 }
+
+.rlstable {
+    counter-reset: row-num;
+}
+
+.rlstable tr {
+   counter-increment: row-num;
+   counter-increment:row-num-1;
+}
+
+.rlstable tr td:first-child::before {
+  
+    content: counter(row-num) ". ";
+    counter-increment: row-num;
+}
+
+.center {
+    text-align:center;
+}
+
+.dropdown {
+    position: relative;
+    display: inline-block;
+    z-index: 1000;
+    float: left;
+    height: 39px;
+    margin: 0 0 0 -2px;
+}
+
+
 
 

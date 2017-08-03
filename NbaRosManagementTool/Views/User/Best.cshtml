@@ -1,32 +1,32 @@
 ﻿@model NbaRosManagementTool.ViewModels.UserViewModel
 
-
-
-
 <hr />
-<div class="container">
-    <div class="row">
-        <div class="Absolute-Center less">
-            <h1>Best Team Leaderboard</h1>
-           <table class="table-bordered table-striped no-transparent">
-                <tbody>
-                    <tr>
-                        <th>Team Name</th>
-                        <th class="col-lg-3">User</th>
-                        <th class="col-lg-4">Rating</th>
-                    </tr>
-                    @foreach (KeyValuePair<int, UserTeams> item in Model.bestTeams)
-                    {
 
-                        <tr>
-                            <td>@item.Value.CityName</td>
-                            <td>@item.Value.TeamName</td>
-                            <td>@item.Key</td>
-                        </tr>
+<h1>Best Team Leaderboard</h1>
+@if (Model.bestTeams.Count == 0)
+{
+    <p>No teams have qualified for this list.</p>
 
-                    }
-                </tbody>
-            </table>
-        </div>
-    </div>
-</div>
+}
+else
+{
+    <table class="table-bordered table-striped no-transparent rlstable">
+        <tbody>
+            <tr>
+                <th>Team Name</th>
+                <th class="col-lg-4">User</th>
+                <th class="col-lg-4" >Rating</th>
+            </tr>
+            @foreach (KeyValuePair<int, UserTeams> item in Model.bestTeams)
+            {
+
+                <tr>
+                    <td>@item.Value.CityName @item.Value.TeamName</td>
+                    <td class="center">@item.Value.UserName</td>
+                    <td class="center">@item.Key</td>
+                </tr>
+
+            }
+        </tbody>
+    </table>
+}

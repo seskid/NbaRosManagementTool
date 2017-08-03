@@ -8,9 +8,10 @@ using NbaRosManagementTool.Data;
 namespace NbaRosManagementTool.Data.Migrations
 {
     [DbContext(typeof(NbaDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20170729190947_FreeAgentTable")]
+    partial class FreeAgentTable
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
             modelBuilder
                 .HasAnnotation("ProductVersion", "1.1.2")
@@ -171,24 +172,6 @@ namespace NbaRosManagementTool.Data.Migrations
                         .HasName("UserNameIndex");
 
                     b.ToTable("AspNetUsers");
-                });
-
-            modelBuilder.Entity("NbaRosManagementTool.Models.FreeAgent", b =>
-                {
-                    b.Property<int>("ID")
-                        .ValueGeneratedOnAdd();
-
-                    b.Property<string>("FirstName");
-
-                    b.Property<string>("LastName");
-
-                    b.Property<int>("PlayerRating");
-
-                    b.Property<int>("TeamID");
-
-                    b.HasKey("ID");
-
-                    b.ToTable("FreeAgent");
                 });
 
             modelBuilder.Entity("NbaRosManagementTool.Models.Player", b =>

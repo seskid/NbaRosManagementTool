@@ -21,6 +21,8 @@ namespace NbaRosManagementTool.Models
 
         public virtual ApplicationUser User { get; set; }
 
+        public string UserName { get; set; }
+
         public UserTeams() { }
 
         public UserTeams(string cityname,string teamname)

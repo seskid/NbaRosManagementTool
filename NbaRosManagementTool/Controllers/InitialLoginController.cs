@@ -62,6 +62,7 @@ namespace NbaRosManagementTool.Controllers
 
             //initial user setup 
             userTeam.User = currentUser;
+            userTeam.UserName = currentUser.UserName;
             context.UserTeams.Add(userTeam);
             context.SaveChanges();
             List<Team> teams = context.Teams.ToList();

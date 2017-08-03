@@ -1,9 +1,23 @@
-﻿@*
-    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-*@
+﻿@model NbaRosManagementTool.ViewModels.FreeAgentViewModel
 @{
+    ViewData["Title"] = "Free Agents";
 }
 
-
-
 <h1>Free Agent List</h1>
+
+<form asp-controller="User" asp-action="MakeOffer" method="post">
+<div class="dropdown">
+    <label asp-for="FreeAgentID"></label>
+    <select asp-for="FreeAgentID" asp-items="Model.FreeAgentList">
+        <option selected="selected">
+            Select free agent
+        </option>
+    </select>
+    <span asp-validation-for="FreeAgentID"></span>
+</div>
+    <label asp-for="SalaryOffer"></label>
+    <input asp-for="SalaryOffer" />
+    <span asp-validation-for="SalaryOffer" class="text-danger"></span>
+    <input type="hidden" id="@Model.FreeAgentID" name="freeAgentID" value="@Model.FreeAgentID" />
+    <input type="submit" id="Model.FreeAgentID" name="freeagent" value="Make Offer" />
+</form>

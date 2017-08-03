@@ -10,6 +10,8 @@ using Microsoft.Extensions.Options;
 using NbaRosManagementTool.Models;
 using NbaRosManagementTool.Models.ManageViewModels;
 using NbaRosManagementTool.Services;
+using NbaRosManagementTool.ViewModels;
+using NbaRosManagementTool.Data;
 
 namespace NbaRosManagementTool.Controllers
 {
@@ -22,6 +24,7 @@ namespace NbaRosManagementTool.Controllers
         private readonly IEmailSender _emailSender;
         private readonly ISmsSender _smsSender;
         private readonly ILogger _logger;
+        private readonly NbaDbContext context;
 
         public ManageController(
           UserManager<ApplicationUser> userManager,
@@ -29,6 +32,7 @@ namespace NbaRosManagementTool.Controllers
           IOptions<IdentityCookieOptions> identityCookieOptions,
           IEmailSender emailSender,
           ISmsSender smsSender,
+          NbaDbContext dbContext,
           ILoggerFactory loggerFactory)
         {
             _userManager = userManager;
@@ -36,6 +40,7 @@ namespace NbaRosManagementTool.Controllers
             _externalCookieScheme = identityCookieOptions.Value.ExternalCookieAuthenticationScheme;
             _emailSender = emailSender;
             _smsSender = smsSender;
+            context = dbContext; 
             _logger = loggerFactory.CreateLogger<ManageController>();
         }
 
@@ -340,6 +345,40 @@ namespace NbaRosManagementTool.Controllers
             }
             return RedirectToAction(nameof(ManageLogins), new { Message = message });
         }
+
+        // GET: /Manage/ChangeTeam
+        [HttpGet]
+        public IActionResult ChangeTeam()
+        {
+            return View();
+        }
+
+        // POST: /Manage/ChangeTeam
+        [HttpPost]
+        public async Task<IActionResult> ChangeTeam(ChangeTeamViewModel model)
+        {
+            if (ModelState.IsValid)
+            {
+                var user = await GetCurrentUserAsync();
+                if (user != null)
+                {
+                    UserTeams userTeam = context.UserTeams.Single(t => t.User == user);
+                    userTeam.CityName = model.CityName;
+                    userTeam.TeamName = model.TeamName;
+                    context.SaveChanges();
+                    String url = String.Format("/User/Team?id={0}", userTeam.ID);
+                    return Redirect(url);
+                }
+                return RedirectToAction(nameof(Index), new { Message = ManageMessageId.Error });
+            }
+            else
+            {
+                return View();
+            }
+        }
+
+
+
 
         #region Helpers
 

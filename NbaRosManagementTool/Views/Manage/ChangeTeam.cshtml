@@ -1,0 +1,31 @@
+﻿@model NbaRosManagementTool.ViewModels.ChangeTeamViewModel
+
+@{
+    ViewData["Title"] = "Change Team";
+}
+
+<h2>@ViewData["Title"].</h2>
+
+<form asp-controller="Manage" asp-action="ChangeTeam" method="post" class="form-horizontal">
+    <h4>Change Team Form</h4>
+    <hr />
+    <div class="form-group">
+        <label asp-for="CityName" class="col-md-2 control-label"></label>
+        <div class="col-md-10">
+            <input asp-for="CityName" class="form-control" />
+            <span asp-validation-for="CityName" class="text-danger"></span>
+        </div>
+    </div>
+    <div class="form-group">
+        <label asp-for="TeamName" class="col-md-2 control-label"></label>
+        <div class="col-md-10">
+            <input asp-for="TeamName" class="form-control" />
+            <span asp-validation-for="TeamName" class="text-danger"></span>
+        </div>
+    </div>
+    <div class="form-group">
+        <div class="col-md-offset-2 col-md-10">
+            <button type="submit" class="btn btn-default">Save Team</button>
+        </div>
+    </div>
+</form>

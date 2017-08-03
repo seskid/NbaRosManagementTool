@@ -21,6 +21,8 @@ namespace NbaRosManagementTool.ViewModels
         
         public List<KeyValuePair<int,UserTeams>> bestTeams { get; set; }
 
+        public string userName { get; set; }
+
         public UserViewModel() { }
 
 

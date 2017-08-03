@@ -21,7 +21,7 @@ namespace NbaRosManagementTool.Data
 
         public DbSet<UserPlayers> UserPlayers { get; set; }
 
-
+        public DbSet<FreeAgent> FreeAgent { get; set; }
 
         public NbaDbContext(DbContextOptions<NbaDbContext> options)
             : base(options)

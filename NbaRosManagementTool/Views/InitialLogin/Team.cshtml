@@ -18,7 +18,7 @@
     <form asp-controller="InitialLogin" asp-action="Add" method="post">
         <h2>@Model.theTeam.CityName @Model.theTeam.TeamName Roster</h2>
 
-        <table class="table-bordered table-striped no-transparent">
+        <table class="table-bordered table-striped no-transparent rlstable">
             <tbody>
                 <tr>
                     <th>Team Roster</th>
@@ -32,8 +32,8 @@
                 {
                     <tr>
                         <td>@p.FirstName @p.LastName</td>
-                        <td class="col-lg-3">@p.PlayerRating</td>
-                        <td>@p.Salary</td>
+                        <td class="col-lg-3 center">@p.PlayerRating</td>
+                        <td class="center">@p.Salary</td>
                         <td><input type="checkbox" id="@p.ID" name="players" value="@p.ID" /></td>
                     </tr>
                 }
@@ -46,7 +46,7 @@
     <form asp-controller="InitialLogin" asp-action="Remove" method="post">
 
         <h2>My Team - @Model.theUserTeam.CityName @Model.theUserTeam.TeamName</h2>
-        <table class="table-bordered table-striped no-transparent">
+        <table class="table-bordered table-striped no-transparent rlstable">
             <tbody>
                 <tr>
                     <th>Team Roster</th>
@@ -60,8 +60,8 @@
                 {
                     <tr>
                         <td>@p.FirstName @p.LastName</td>
-                        <td class="col-lg-3">@p.PlayerRating</td>
-                        <td>@p.Salary</td>
+                        <td class="col-lg-3 center">@p.PlayerRating</td>
+                        <td class="center">@p.Salary</td>
                         <td><input type="checkbox" id="@p.ID" name="players" value="@p.ID" /></td>
                     </tr>
                 }
