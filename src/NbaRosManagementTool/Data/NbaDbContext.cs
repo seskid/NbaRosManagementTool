@@ -23,6 +23,8 @@ namespace NbaRosManagementTool.Data
 
         public DbSet<FreeAgent> FreeAgent { get; set; }
 
+        public DbSet<Offer> Offer { get; set; }
+
         public NbaDbContext(DbContextOptions<NbaDbContext> options)
             : base(options)
         {

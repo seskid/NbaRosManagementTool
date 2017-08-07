@@ -39,10 +39,7 @@ namespace NbaRosManagementTool.Controllers
            
         }
 
-
-
-
-        public IActionResult Team(int id)
+       public IActionResult Team(int id)
         {
             UserViewModel userViewModel = new UserViewModel();
 
@@ -118,6 +115,14 @@ namespace NbaRosManagementTool.Controllers
             FreeAgent freeAgent = context.FreeAgent.Single(p => p.ID == Convert.ToInt32(freeAgentID));
             var currentUser = await GetCurrentUserAsync();
             var admin = _userManager.Users.Single(u => u.UserName == "admin");
+
+            Offer offer = new Offer();
+            offer.FreeAgentID = Convert.ToInt32(freeAgentID);
+            offer.Salary = SalaryOffer;
+            offer.UserName = currentUser.UserName;
+            context.Offer.Add(offer);
+            context.SaveChanges();
+
             
             string subject = "NBA Free Agent Offer";
             string message = String.Format("{0} has made an offer of {1} to {2}",currentUser.UserName,SalaryOffer,freeAgent.FirstName+" "+freeAgent.LastName);
@@ -125,11 +130,80 @@ namespace NbaRosManagementTool.Controllers
             await emailSender.SendEmailAsync(subject,message,admin.Email);
             return View();
         }
+
+        // GET: /User/Offer/Index
+        public IActionResult Offer()
+        {
+            OfferViewModel offerViewModel = GetOfferModel();
+            return View(offerViewModel);
+        }
+
+        //Post: /User/Offer/Index
+        [HttpPost]
+        public IActionResult Offer(string action,int offerID)
+        {
+            if (action == "decline")
+            {
+                Offer offer = context.Offer.SingleOrDefault(o => o.ID == offerID);
+                context.Offer.Remove(offer);
+                context.SaveChanges();
+                OfferViewModel offerViewModel = GetOfferModel();
+                return View(offerViewModel);
+            }
+            else
+            {
+                Offer offer = context.Offer.SingleOrDefault(o => o.ID == offerID);
+                FreeAgent freeAgent = context.FreeAgent.Single(f => f.ID == offer.FreeAgentID);
+                UserTeams userTeam = context.UserTeams.Single(u => u.UserName == offer.UserName);
+
+                
+                Player newPlayer = new Player();
+                newPlayer.FirstName = freeAgent.FirstName;
+                newPlayer.LastName = freeAgent.LastName;
+                newPlayer.PlayerRating = freeAgent.PlayerRating;
+                newPlayer.Salary = offer.Salary;
+                newPlayer.TeamID = freeAgent.TeamID;
+                context.Players.Add(newPlayer);
+                context.SaveChanges();
+
+                UserPlayers userPlayer = new UserPlayers();
+                userPlayer.PlayerID = newPlayer.ID;
+                userPlayer.UserTeamsID = userTeam.ID;
+                userTeam.CapSpace = userTeam.CapSpace - newPlayer.Salary;
+                userTeam.TeamPayroll = userTeam.TeamPayroll + newPlayer.Salary;
+                context.UserPlayers.Add(userPlayer);
+                context.SaveChanges();
+
+                context.Offer.Remove(offer);
+                context.FreeAgent.Remove(freeAgent);
+                context.SaveChanges();
+
+                OfferViewModel offerViewModel = GetOfferModel();
+                return View(offerViewModel);
+            }
+        }
+
         #region Helpers
 
         private Task<ApplicationUser> GetCurrentUserAsync()
         {
             return _userManager.GetUserAsync(HttpContext.User);
+        }
+
+        private OfferViewModel GetOfferModel()
+        {
+            OfferViewModel offerViewModel = new OfferViewModel();
+            offerViewModel.Offers = new List<KeyValuePair<Offer, FreeAgent>>();
+            List<Offer> offers = context.Offer.ToList();
+
+            foreach (Offer item in offers)
+            {
+                FreeAgent freeAgent = context.FreeAgent.Single(f => f.ID == item.FreeAgentID);
+                var userOffer = new KeyValuePair<Offer, FreeAgent>(item, freeAgent);
+                offerViewModel.Offers.Add(userOffer);
+            }
+
+            return offerViewModel;
         }
 
         #endregion

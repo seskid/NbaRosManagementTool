@@ -12,7 +12,7 @@ namespace NbaRosManagementTool.ViewModels
     public class FreeAgentViewModel
     {
         [Required]
-        [Display(Name = "Free Agents")]
+        [Display(Name = "Select Free Agent")]
         public int FreeAgentID { get; set; }
 
         [Required]

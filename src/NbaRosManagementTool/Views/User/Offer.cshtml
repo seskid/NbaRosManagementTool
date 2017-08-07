@@ -1,0 +1,41 @@
+﻿@model NbaRosManagementTool.ViewModels.OfferViewModel
+
+
+
+
+<h1>Current Offers</h1>
+@if (Model.Offers.Count == 0)
+{
+    <h3>All offers have been accepted or declined. </h3>
+
+}
+else
+{
+    <form asp-area="" asp-controller="User" asp-action="Offer" method="post">
+        <table class="table-bordered table-striped no-transparent rlstable">
+            <tbody>
+                <tr>
+                    <th>Player</th>
+                    <th class="col-lg-4">Salary Offer</th>
+                    <th class="col-lg-4">User</th>
+                </tr>
+                @foreach (KeyValuePair<Offer, FreeAgent> item in Model.Offers)
+                {
+                     <tr>
+                        <td>@item.Value.FirstName @item.Value.LastName</td>
+                        <td class="center">@item.Key.Salary</td>
+                        <td class="center">@item.Key.UserName</td>
+                        <td><button type="submit" name="action" value="accept">Accept</button></td>
+                        <td><button type="submit" name="action" value="decline">Decline</button></td>
+                        <td><input type="hidden" name="offerID" value="@item.Key.ID" /></td>
+                    </tr>
+                 }
+            </tbody>
+         </table>
+        
+    </form>
+ }
+
+
+
+

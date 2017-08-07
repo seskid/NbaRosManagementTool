@@ -8,9 +8,10 @@ using NbaRosManagementTool.Data;
 namespace NbaRosManagementTool.Data.Migrations
 {
     [DbContext(typeof(NbaDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20170805041142_Offer")]
+    partial class Offer
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
             modelBuilder
                 .HasAnnotation("ProductVersion", "1.1.2")
@@ -191,6 +192,24 @@ namespace NbaRosManagementTool.Data.Migrations
                     b.ToTable("FreeAgent");
                 });
 
+            modelBuilder.Entity("NbaRosManagementTool.Models.Offer", b =>
+                {
+                    b.Property<int>("ID")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<int>("FreeAgentID");
+
+                    b.Property<decimal>("Salary");
+
+                    b.Property<string>("UserId");
+
+                    b.HasKey("ID");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("Offer");
+                });
+
             modelBuilder.Entity("NbaRosManagementTool.Models.Player", b =>
                 {
                     b.Property<int>("ID")
@@ -303,6 +322,13 @@ namespace NbaRosManagementTool.Data.Migrations
                         .WithMany("Roles")
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade);
+                });
+
+            modelBuilder.Entity("NbaRosManagementTool.Models.Offer", b =>
+                {
+                    b.HasOne("NbaRosManagementTool.Models.ApplicationUser", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId");
                 });
 
             modelBuilder.Entity("NbaRosManagementTool.Models.Player", b =>

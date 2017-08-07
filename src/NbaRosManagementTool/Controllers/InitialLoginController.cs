@@ -162,6 +162,16 @@ namespace NbaRosManagementTool.Controllers
                     Player player = context.Players.Single(pl => pl.ID == p);
                     initialLoginViewModel.theUserTeam.CapSpace = initialLoginViewModel.theUserTeam.CapSpace + player.Salary;
                     initialLoginViewModel.theUserTeam.TeamPayroll = initialLoginViewModel.theUserTeam.TeamPayroll - player.Salary;
+                    if (player.TeamID == 32)
+                    {
+                        FreeAgent freeAgent = new FreeAgent();
+                        freeAgent.FirstName = player.FirstName;
+                        freeAgent.LastName = player.LastName;
+                        freeAgent.PlayerRating = player.PlayerRating;
+                        freeAgent.TeamID = 32;
+                        context.FreeAgent.Add(freeAgent);
+                        context.Players.Remove(player);
+                    }
                 }
             }
             else
